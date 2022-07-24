@@ -13,7 +13,12 @@ const productDetails = ({ products, product }) => {
   const { image, name, details, price } = product;
   const [index, setIndex] = useState(0);
 
-  const { incQty, decQty, quantity, onAdd } = useStateContext();
+  const { incQty, decQty, quantity, onAdd, setShowCart } = useStateContext();
+  const handleBuyNow = () => {
+    onAdd(product, quantity);
+
+    setShowCart(true);
+  };
 
   return (
     <div>
@@ -29,12 +34,12 @@ const productDetails = ({ products, product }) => {
           <div className='small-image-container'>
             {image?.map((item, i) => (
               <img
+                key={i}
                 src={urlFor(item)}
                 className={
                   i === index ? "small-image selected-image" : "small-image"
                 }
                 onMouseEnter={() => setIndex(i)}
-                key={item._id}
               />
             ))}
           </div>
@@ -73,7 +78,7 @@ const productDetails = ({ products, product }) => {
               onClick={() => onAdd(product, quantity)}>
               Add To Cart
             </button>
-            <button type='button' className='buy-now' onClick=''>
+            <button type='button' className='buy-now' onClick={handleBuyNow}>
               Buy Now
             </button>
           </div>
@@ -112,7 +117,7 @@ slug{
 };
 export const getStaticProps = async ({ params: { slug } }) => {
   const query = `*[_type == "product" && slug.current == '${slug}'][0]`;
-  const productsQuery = '*[_type == "product"]';
+  const productsQuery = `*[_type == "product"]`;
   const product = await client.fetch(query);
   const products = await client.fetch(productsQuery);
 

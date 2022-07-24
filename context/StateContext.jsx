@@ -59,10 +59,10 @@ export const StateContext = ({ children }) => {
 
     setTotalPrice(
       (prevTotalPrice) =>
-        prevTotalPrice - foundProduct.price * foundProduct * quantity
+        prevTotalPrice - foundProduct.price * foundProduct.quantity
     );
     setTotalQuantities(
-      (prevQuantities) => prevQuantities - foundProduct.quantities
+      (prevTotalQuantities) => prevTotalQuantities - foundProduct.quantity
     );
     setCartItems(newCartItems);
   };
@@ -109,6 +109,9 @@ export const StateContext = ({ children }) => {
         onAdd,
         toggleCartItemQuantity,
         onRemove,
+        setCartItems,
+        setTotalPrice,
+        setTotalQuantities,
       }}>
       {children}
     </Context.Provider>
